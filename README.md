@@ -5,4 +5,4 @@
 
 ## 使用：
 - public/image/图片
-- loga/日志
+- logs/日志
