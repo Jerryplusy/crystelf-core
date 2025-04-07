@@ -17,15 +17,14 @@ class ImageController {
   }
 
   private initializeRoutes(): void {
-    this.router.get('/:filename', this.handleGetImage);
+    this.router.get('*', this.handleGetImage);
   }
 
   private handleGetImage = (req: express.Request, res: express.Response): void => {
     try {
-      const filename = req.params.filename;
-      logger.debug(`有个小可爱正在请求${filename}噢..`);
-
-      const filePath = this.imageService.getImage(filename);
+      const fullPath = req.params[0];
+      logger.debug(`有个小可爱正在请求${fullPath}噢..`);
+      const filePath = this.imageService.getImage(fullPath);
       if (!filePath) {
         this.sendError(res, 404, '文件不存在啦！');
         return;

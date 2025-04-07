@@ -4,7 +4,6 @@ import paths from './utils/core/path';
 import sampleController from './modules/sample/sample.controller';
 import imageController from './modules/image/image.controller';
 import Config from './utils/core/config';
-import fc from './utils/core/file';
 
 const apps = {
   createApp() {
@@ -41,9 +40,7 @@ const apps = {
         });
       }
     });
-    const logPath = paths.get('log');
-    fc.createDir(logPath);
-    logger.debug(`日志目录初始化: ${logPath}`);
+    paths.init();
     logger.info('晶灵核心初始化完毕！');
     return app;
   },
