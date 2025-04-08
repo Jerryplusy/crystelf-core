@@ -19,16 +19,16 @@ class SampleController {
     this.router.post('/greet', this.postGreet);
   }
 
-  private getHello = (req: express.Request, res: express.Response): void => {
+  private getHello = async (req: express.Request, res: express.Response): Promise<void> => {
     try {
-      const result = sampleService.getHello();
+      const result = await sampleService.getHello();
       response.success(res, result);
     } catch (error) {
       response.error(res, '请求失败了..', 500, error);
     }
   };
 
-  private postGreet = (req: express.Request, res: express.Response): void => {
+  private postGreet = async (req: express.Request, res: express.Response): Promise<void> => {
     try {
       const { name } = req.body;
       if (!name) {
