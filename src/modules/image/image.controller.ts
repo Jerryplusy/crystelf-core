@@ -20,12 +20,13 @@ class ImageController {
     this.router.get('*', this.handleGetImage);
   }
 
-  private handleGetImage = (req: express.Request, res: express.Response): void => {
+  private handleGetImage = async (req: express.Request, res: express.Response): Promise<void> => {
     try {
       const fullPath = req.params[0];
       logger.debug(`有个小可爱正在请求${fullPath}噢..`);
-      const filePath = this.imageService.getImage(fullPath);
+      const filePath = await this.imageService.getImage(fullPath);
       if (!filePath) {
+        logger.warn(`${fullPath}：文件不存在..`);
         this.sendError(res, 404, '文件不存在啦！');
         return;
       }

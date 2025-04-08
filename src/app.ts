@@ -4,14 +4,13 @@ import paths from './utils/core/path';
 import sampleController from './modules/sample/sample.controller';
 import imageController from './modules/image/image.controller';
 import Config from './utils/core/config';
+import redisService from './services/redis/redis';
 
 const apps = {
   createApp() {
     const app = express();
 
     logger.info('晶灵核心初始化..');
-
-    Config.check(['PORT', 'DEBUG']);
 
     app.use(express.json());
     logger.debug('成功加载express.json()中间件');
@@ -42,6 +41,7 @@ const apps = {
     });
     paths.init();
     logger.info('晶灵核心初始化完毕！');
+    redisService.init();
     return app;
   },
 };

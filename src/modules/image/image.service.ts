@@ -11,7 +11,7 @@ class ImageService {
     logger.info(`晶灵云图数据中心初始化..数据存储在: ${this.imagePath}`);
   }
 
-  public getImage(relativePath: string): string | null {
+  public async getImage(relativePath: string): Promise<string | null> {
     if (!this.isValidPath(relativePath)) {
       throw new Error('非法路径请求');
     }
