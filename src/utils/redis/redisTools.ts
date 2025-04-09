@@ -1,11 +1,11 @@
 import logger from '../core/logger';
 
 class redisTools {
-  public serialize<T>(data: T): string {
+  public static serialize<T>(data: T): string {
     return JSON.stringify(data);
   }
 
-  public deserialize<T>(jsonString: string): T | undefined {
+  public static deserialize<T>(jsonString: string): T | undefined {
     try {
       return JSON.parse(jsonString);
     } catch (err) {
@@ -14,7 +14,7 @@ class redisTools {
     }
   }
 
-  public reviveDates<T>(obj: T): T {
+  public static reviveDates<T>(obj: T): T {
     const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
 
     const reviver = (_: string, value: any) => {
@@ -27,5 +27,5 @@ class redisTools {
   }
 }
 
-const redisTool = new redisTools();
+const redisTool = redisTools;
 export default redisTool;

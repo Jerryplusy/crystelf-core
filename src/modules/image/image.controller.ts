@@ -28,14 +28,14 @@ class ImageController {
       const filePath = await this.imageService.getImage(fullPath);
       if (!filePath) {
         logger.warn(`${fullPath}：文件不存在..`);
-        response.error(res, '文件不存在啦！', 404);
+        await response.error(res, '文件不存在啦！', 404);
         return;
       }
 
       res.sendFile(filePath);
       logger.info(`成功投递文件: ${filePath}`);
     } catch (error) {
-      response.error(res, '晶灵服务处理图像请求时出错..', 500);
+      await response.error(res, '晶灵服务处理图像请求时出错..', 500);
       logger.error('晶灵图像请求处理失败:', error);
     }
   };

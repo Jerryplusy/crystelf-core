@@ -28,25 +28,25 @@ class Logger {
   public info(...args: any[]): void {
     const message = this.formatMessage('INFO', args);
     console.log(chalk.green(message));
-    this.logToFile(message);
+    this.logToFile(message).then();
   }
 
   public warn(...args: any[]): void {
     const message = this.formatMessage('WARN', args);
     console.log(chalk.yellow(message));
-    this.logToFile(message);
+    this.logToFile(message).then();
   }
 
   public error(...args: any[]): void {
     const message = this.formatMessage('ERROR', args);
     console.error(chalk.red(message));
-    this.logToFile(message);
+    this.logToFile(message).then();
   }
 
   public fatal(exitCode: number = 1, ...args: any[]): never {
     const message = this.formatMessage('FATAL', args);
     console.error(chalk.red.bold(message));
-    this.logToFile(message);
+    this.logToFile(message).then();
     process.exit(exitCode);
   }
 
@@ -56,9 +56,9 @@ class Logger {
       .join(' ')}`;
   }
 
-  private logToFile(message: string): void {
+  private async logToFile(message: string): Promise<void> {
     try {
-      fc.logToFile(`${message}`);
+      await fc.logToFile(`${message}`);
     } catch (err: any) {
       console.error(chalk.red(`[LOGGER] 写入日志失败: ${err.message}`));
     }
