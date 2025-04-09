@@ -78,7 +78,7 @@ class RedisService {
 
   public getClient(): Redis {
     if (!this.isConnected) {
-      logger.fatal(['Redis未连接..']);
+      logger.fatal(1, 'Redis未连接..');
     }
     return this.client;
   }

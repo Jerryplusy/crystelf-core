@@ -36,9 +36,9 @@ class fc {
     }
   }
 
-  public static logToFile(level: string, message: string): void {
+  public static logToFile(message: string): void {
     const logFile = path.join(paths.get('log'), `${date.getCurrentDate()}.log`);
-    const logMessage = `[${date.getCurrentTime()}] [${level}] ${message}\n`;
+    const logMessage = `${message}\n`;
 
     fs.appendFile(logFile, logMessage, (err) => {
       if (err) console.error(chalk.red('[LOGGER] 写入日志失败:'), err);
