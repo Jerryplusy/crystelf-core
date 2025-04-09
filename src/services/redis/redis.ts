@@ -2,13 +2,15 @@ import Redis from 'ioredis';
 import logger from '../../utils/core/logger';
 import tools from '../../utils/core/tool';
 import config from '../../utils/core/config';
+import redisTool from '../../utils/redis/redisTools';
+import IUser from '../../types/user';
 
 class RedisService {
   private client!: Redis;
   private isConnected = false;
 
   constructor() {
-    this.initialize();
+    this.initialize().then();
   }
 
   private async initialize() {
@@ -86,6 +88,35 @@ class RedisService {
   public async disconnect(): Promise<void> {
     await this.client.quit();
     this.isConnected = false;
+  }
+
+  public async setObject<T>(key: string, value: T, ttl?: number): Promise<void> {
+    const serialized = redisTool.serialize(value);
+    await this.getClient().set(key, serialized);
+
+    if (ttl) {
+      await this.getClient().expire(key, ttl);
+    }
+  }
+
+  public async getObject<T>(key: string): Promise<T | undefined> {
+    const serialized = await this.getClient().get(key);
+    if (!serialized) return undefined;
+
+    const deserialized = redisTool.deserialize<T>(serialized);
+    return redisTool.reviveDates(deserialized);
+  }
+
+  public async test(): Promise<void> {
+    const testData: IUser = {
+      name: 'Jerry',
+      qq: '114514',
+      isAdmin: true,
+      password: '114514',
+      createdAt: new Date(),
+    };
+    let test = redisTool.reviveDates(testData);
+    logger.debug(test);
   }
 }
 
