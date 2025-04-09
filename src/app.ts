@@ -3,7 +3,7 @@ import logger from './utils/core/logger';
 import paths from './utils/core/path';
 import sampleController from './modules/sample/sample.controller';
 import imageController from './modules/image/image.controller';
-import Config from './utils/core/config';
+import config from './utils/core/config';
 
 const apps = {
   async createApp() {
@@ -26,7 +26,7 @@ const apps = {
       app.use(module.path, module.controller.getRouter());
       logger.debug(`模块路由挂载: ${module.path.padEnd(12)} => ${module.name}`);
 
-      if (Config.get('DEBUG', false)) {
+      if (config.get('DEBUG', false)) {
         module.controller.getRouter().stack.forEach((layer) => {
           if (layer.route) {
             const methods = Object.keys(layer.route)

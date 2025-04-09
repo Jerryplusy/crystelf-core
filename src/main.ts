@@ -1,10 +1,9 @@
 import apps from './app';
 import logger from './utils/core/logger';
 import config from './utils/core/config';
-import Config from './utils/core/config';
 import redisService from './services/redis/redis';
 
-Config.check(['PORT', 'DEBUG', 'RD_PORT', 'RD_ADD']);
+config.check(['PORT', 'DEBUG', 'RD_PORT', 'RD_ADD']);
 const PORT = config.get('PORT') || 3000;
 
 apps

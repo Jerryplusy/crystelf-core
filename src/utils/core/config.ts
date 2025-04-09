@@ -67,6 +67,6 @@ class ConfigManger {
   }
 }
 
-const Config = ConfigManger.getInstance();
+const config = ConfigManger.getInstance();
 
-export default Config;
+export default config;
