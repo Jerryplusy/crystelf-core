@@ -2,13 +2,14 @@ import Redis from 'ioredis';
 import logger from '../../utils/core/logger';
 import tools from '../../utils/core/tool';
 import config from '../../utils/core/config';
+import serializer from '../../utils/redis/serializer';
 
 class RedisService {
   private client!: Redis;
   private isConnected = false;
 
   constructor() {
-    this.initialize();
+    this.initialize().then();
   }
 
   private async initialize() {
@@ -86,6 +87,23 @@ class RedisService {
   public async disconnect(): Promise<void> {
     await this.client.quit();
     this.isConnected = false;
+  }
+
+  public async setObject<T>(key: string, value: T, ttl?: number): Promise<void> {
+    const serialized = serializer.serialize(value);
+    await this.getClient().set(key, serialized);
+
+    if (ttl) {
+      await this.getClient().expire(key, ttl);
+    }
+  }
+
+  public async getObject<T>(key: string): Promise<T | undefined> {
+    const serialized = await this.getClient().get(key);
+    if (!serialized) return undefined;
+
+    const deserialized = serializer.deserialize<T>(serialized);
+    return serializer.reviveDates(deserialized);
   }
 }
 
